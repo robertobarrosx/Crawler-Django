@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+<head>
+
+    <meta charset="UTF-8">
+    <title>Crawler</title>
+</head>
+{% block content %}
+ <style type="text/css">
+        a:link
+        {
+        text-decoration:none;
+        }
+        {% for v in var %}
+            .links{{ forloop.counter0 }} {
+                overflow: hidden;
+            }
+            .tags{{ forloop.counter0 }} {
+                overflow: hidden;
+            }
+
+            input[name="checkT{{ forloop.counter0 }}"]:checked ~ .tags{{ forloop.counter0 }} {
+              max-height: 0em;
+            }
+            input[name="checkL{{ forloop.counter0 }}"]:checked ~ .links{{ forloop.counter0 }} {
+              max-height: 0em;
+            }
+        {% endfor %}
+    </style>
+<br>
+<div class="row">
+  <div class="col-sm-12">
+    <form action="." method="GET" class="form-inline">
+      <input type="text" id="search" name="search" style="width: 70%" class="form-control" placeholder="Buscar">
+      <input type="submit" class="btn btn-primary" style="margin-left: 10px;" value="OK">
+    </form>
+  </div>
+</div>
+{% if var == none %}
+    <br>
+    <p class="alert alert-danger">Digite um site valido!</p>
+{% else %}
+{% if tempo != 0 %}
+    <br>
+    <a class="alert alert-dark" style="color: #ff0006">Encontramos {{var|length}} resultados ({{tempo}} segundos)  </a>
+    <br>
+    <br>
+{% endif %}
+    {% for v in var %}
+    <div style="">
+        <div class="page-header">
+        <a href="{{v.0}}" ><h4 href="{{v.0}}">🌍 {{v.0}}
+        </h4></a>
+        <input type="checkbox" name="checkT{{ forloop.counter0 }}" checked>
+            <i class="fas fa-file-code"></i>
+        <label for="checkT{{ forloop.counter0 }}">🏷️Tags ({{v.1|length}})</label>
+        <div class="tags{{ forloop.counter0 }}">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Tag</th>
+                  <th class="text-center">Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                    {% for tags in v.1 %}
+                     <tr>
+                         <td>{{tags.0}}</td>
+                         <td class="text-center">{{tags.1}}</td>
+                     </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <input type="checkbox" name="checkL{{ forloop.counter0 }}" checked>
+        <label for="checkL{{ forloop.counter0 }}">🔗Links ({{v.2|length}})</label>
+        <div class="links{{ forloop.counter0 }}">
+           <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for link in v.2 %}
+                    <tr>
+                        <td><span class="oi oi-link-intact"></span> <a  href="{{link}}">{{link}}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+        {% for v in var %}
+            .links{{ forloop.counter0 }} {
+                overflow: hidden;
+            }
+            .tags{{ forloop.counter0 }} {
+                overflow: hidden;
+            }
+            input[name="checkT{{ forloop.counter0 }}"]:checked ~ .tags{{ forloop.counter0 }} {
+              max-height: 1em;
+            }
+            input[name="checkL{{ forloop.counter0 }}"]:checked ~ .links{{ forloop.counter0 }} {
+              max-height: 1em;
+            }
+        {% endfor %}
+    </style>
+    <meta charset="UTF-8">
+    <title>Crawler</title>
+</head>
+<body>
+<h1>Escrevi sai correndo...</h1>
+{% for v in var %}
+<div style="">
+    <h4>{{v.0}}</h4>
+    <input type="checkbox" name="checkT{{ forloop.counter0 }}" checked>
+    <label for="checkT{{ forloop.counter0 }}">Tags</label>
+    <div class="tags{{ forloop.counter0 }}">
+        <ul>
+            {% for tags in v.1 %}
+                <li>{{tags.0}} - {{tags.1}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <input type="checkbox" name="checkL{{ forloop.counter0 }}" checked>
+    <label for="checkL{{ forloop.counter0 }}">Links</label>
+    <div class="links{{ forloop.counter0 }}">
+        <ul>
+            {% for link in v.2 %}
+                <li><a href="{{link}}">{{link}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endfor %}
+</body>
+</html>
